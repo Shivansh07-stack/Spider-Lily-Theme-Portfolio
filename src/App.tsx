@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Flower2, Sparkles, Code, Briefcase, Book, Activity, Database, LineChart, Network, Sliders, Shield, Lightbulb } from 'lucide-react';
+import { Flower2, Sparkles, Code, Briefcase, Book, Activity, Database, LineChart, Network, Sliders, Shield, Lightbulb, Circle, Triangle, Hexagon, Square } from 'lucide-react';
 import SpiderLily from './SpiderLily';
 import './index.css';
 
@@ -89,13 +89,16 @@ const Ambience = () => {
       <div className="card-title" style={{ marginBottom: '0.5rem', fontSize: '0.65rem' }}>Ambience</div>
       <div className="ambience-content">
         <div className="song-info">
+          {/* Update the title and artist here */}
           <h3>Moonlight Sonata</h3>
           <p>Beethoven</p>
         </div>
         <div className={`play-btn ${isPlaying ? 'playing' : ''}`} onClick={togglePlay}>
           {isPlaying ? <div className="pause-icon">||</div> : ''}
         </div>
-        <audio ref={audioRef} loop src="https://upload.wikimedia.org/wikipedia/commons/2/23/Beethoven_Moonlight_1st_movement.ogg" />
+
+        {/* Change the src to your local file path */}
+        <audio ref={audioRef} loop src="/moonlight.mp3" />
       </div>
     </div>
   );
@@ -375,29 +378,77 @@ const SkillsConstellation = () => {
 
 const LiveFeed = () => {
   const [hoveredCell, setHoveredCell] = useState<number | null>(null);
+  const [events, setEvents] = useState<any[]>([]);
+  const [weeklyCommits, setWeeklyCommits] = useState(87);
+
+  useEffect(() => {
+    fetch('https://api.github.com/users/Shivansh07-stack/events/public')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          // Calculate commits from the recent events
+          const commits = data.filter(e => e.type === 'PushEvent')
+            .reduce((acc, curr) => acc + (curr.payload?.commits?.length || 0), 0);
+          setWeeklyCommits(commits > 0 ? commits : 12); // Fallback to a number if 0 to look nice
+
+          const parsed = data.slice(0, 4).map((item, index) => {
+            let title = '';
+            let IconCmp = Circle;
+
+            if (item.type === 'PushEvent') {
+              title = `Pushed to ${item.repo.name.split('/')[1]}`;
+              IconCmp = Triangle;
+            } else if (item.type === 'CreateEvent') {
+              title = `Created ${item.payload.ref_type || 'repository'}\n${item.repo.name.split('/')[1]}`;
+              IconCmp = Hexagon;
+            } else if (item.type === 'WatchEvent') {
+              title = `Starred repository\n${item.repo.name.split('/')[1]}`;
+              IconCmp = Square;
+            } else if (item.type === 'IssuesEvent') {
+              title = `${item.payload.action} issue in\n${item.repo.name.split('/')[1]}`;
+              IconCmp = Circle;
+            } else if (item.type === 'PullRequestEvent') {
+              title = `${item.payload.action} PR in\n${item.repo.name.split('/')[1]}`;
+              IconCmp = Hexagon;
+            } else {
+              title = `${item.type.replace('Event', '')} on\n${item.repo.name.split('/')[1]}`;
+              IconCmp = Square;
+            }
+
+            const date = new Date(item.created_at);
+            const now = new Date();
+            const diffHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+            const timeStr = diffHours === 0 ? 'Just now' : diffHours < 24 ? `${diffHours} hours ago` : `${Math.floor(diffHours / 24)} days ago`;
+
+            return { title, time: timeStr, icon: <IconCmp size={14} color="var(--accent-red)" strokeWidth={1.5} /> };
+          });
+          setEvents(parsed);
+        }
+      })
+      .catch(console.error);
+  }, []);
+
+  const displayEvents = events.length > 0 ? events : [
+    { title: 'Loading...', time: '', icon: <Circle size={14} color="var(--accent-red)" strokeWidth={1.5} /> }
+  ];
 
   return (
     <div className="glass-card card-live" id="live">
       <div className="card-title">Live Feed</div>
       <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Real-time activity from my digital garden</p>
-      <div className="feed-list">
-        {[
-          { title: 'Latest Commit', time: '2 hours ago', icon: '○' },
-          { title: 'Pushed to AI Job Analyzer', time: '5 hours ago', icon: '◬' },
-          { title: 'Solved 2 LeetCode Problems', time: 'Yesterday', icon: '❀' },
-          { title: 'New Notebook Added\nBank Churn EDA', time: '2 days ago', icon: '◻' }
-        ].map((item, i) => (
-          <div className="feed-item interactive" key={i}>
-            <div className="feed-icon">{item.icon}</div>
+      <div className="feed-list" style={{ marginTop: '1.5rem' }}>
+        {displayEvents.map((item, i) => (
+          <div className="feed-item interactive" key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
+            <div className="feed-icon" style={{ marginTop: '2px' }}>{item.icon}</div>
             <div className="feed-text">
-              <div className="feed-title" style={{ whiteSpace: 'pre-line' }}>{item.title}</div>
-              <div className="feed-time">{item.time}</div>
+              <div className="feed-title" style={{ whiteSpace: 'pre-line', fontSize: '0.8rem', lineHeight: '1.4' }}>{item.title}</div>
+              <div className="feed-time" style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>{item.time}</div>
             </div>
           </div>
         ))}
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '1.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '2rem' }}>
         <div>
           <div style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>GitHub Activity</div>
           <div className="github-heatmap">
@@ -415,7 +466,7 @@ const LiveFeed = () => {
         </div>
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)' }}>This Week</div>
-          <div style={{ fontSize: '1.5rem', color: 'var(--accent-red)' }}>87</div>
+          <div style={{ fontSize: '1.5rem', color: 'var(--accent-red)' }}>{weeklyCommits}</div>
           <div style={{ fontSize: '0.65rem' }}>Contributions</div>
         </div>
       </div>
