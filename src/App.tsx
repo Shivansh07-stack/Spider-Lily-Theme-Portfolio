@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Flower2, Sparkles, Code, Briefcase, Book, Activity, Database, LineChart, Network, Sliders, Shield, Lightbulb, Circle, Triangle, Hexagon, Square } from 'lucide-react';
 import SpiderLily from './SpiderLily';
+import moonlightAudio from './assets/moonlight.mp3';
 import './index.css';
 
 const Sidebar = ({ activeSection, scrollToSection }: { activeSection: string, scrollToSection: (id: string) => void }) => {
@@ -98,7 +99,7 @@ const Ambience = () => {
         </div>
 
         {/* Change the src to your local file path */}
-        <audio ref={audioRef} loop src="/moonlight.mp3" />
+        <audio ref={audioRef} loop src={moonlightAudio} />
       </div>
     </div>
   );
