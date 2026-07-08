@@ -392,7 +392,7 @@ const LiveFeed = () => {
             .reduce((acc, curr) => acc + (curr.payload?.commits?.length || 0), 0);
           setWeeklyCommits(commits > 0 ? commits : 12); // Fallback to a number if 0 to look nice
 
-          const parsed = data.slice(0, 4).map((item, index) => {
+          const parsed = data.slice(0, 4).map((item) => {
             let title = '';
             let IconCmp = Circle;
 
