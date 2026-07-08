@@ -1,20 +1,27 @@
 import { useState, useRef, useEffect } from 'react';
+import { Flower2, Sparkles, Code, Briefcase, Book, Activity, Database, LineChart, Network, Sliders, Shield, Lightbulb } from 'lucide-react';
 import SpiderLily from './SpiderLily';
 import './index.css';
 
 const Sidebar = ({ activeSection, scrollToSection }: { activeSection: string, scrollToSection: (id: string) => void }) => {
   const navItems = [
-    { id: 'journey', icon: '❀', label: 'Journey' },
-    { id: 'projects', icon: '⌨', label: 'Projects' },
-    { id: 'skills', icon: '✧', label: 'Skills' },
-    { id: 'live', icon: '⚡', label: 'Live' },
-    { id: 'about', icon: '📖', label: 'About' }
+    { id: 'journey', icon: <Flower2 size={18} strokeWidth={1.5} />, label: 'Journey' },
+    { id: 'skills', icon: <Sparkles size={18} strokeWidth={1.5} />, label: 'Skills' },
+    { id: 'projects', icon: <Code size={18} strokeWidth={1.5} />, label: 'Projects' },
+    { id: 'experience', icon: <Briefcase size={18} strokeWidth={1.5} />, label: 'Experience' },
+    { id: 'research', icon: <Book size={18} strokeWidth={1.5} />, label: 'Research' },
+    { id: 'live', icon: <Activity size={18} strokeWidth={1.5} />, label: 'Live' }
   ];
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ cursor: 'pointer' }}>
-        <div className="sidebar-logo-inner"></div>
+      <div className="sidebar-brand" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '3rem' }}>
+        <div className="sidebar-logo">
+          <Flower2 size={16} strokeWidth={1.5} color="var(--accent-red)" />
+        </div>
+        <div className="sidebar-wordmark" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', fontSize: '0.65rem', letterSpacing: '0.2em', color: 'var(--text-secondary)', textTransform: 'uppercase', textAlign: 'center' }}>
+          Shivansh Sharma
+        </div>
       </div>
       <nav className="nav-menu">
         {navItems.map(item => (
@@ -96,16 +103,14 @@ const Ambience = () => {
 
 const HeroSection = () => (
   <section className="hero-section" id="hero">
-    <div className="hero-background"></div>
-    
     <div className="top-header">
       <h1>SHIVANSH SHARMA</h1>
     </div>
 
     <div className="hero-content">
       <h2 className="hero-quote">
-        Every <span>bloom</span> is a lesson.<br/>
-        Every lesson shaped<br/>
+        Every <span>bloom</span> is a lesson.<br />
+        Every lesson shaped<br />
         how I solve problems.
       </h2>
       <button className="hero-btn" onClick={() => document.getElementById('journey')?.scrollIntoView({ behavior: 'smooth' })}>
@@ -120,56 +125,54 @@ const HeroSection = () => (
   </section>
 );
 
-const JourneyTimeline = ({ isActive }: { isActive?: boolean }) => {
-  const journey = [
-    { year: '2020', title: 'The Beginning', desc: 'Curious mind with a love for puzzles', icon: '❀' },
-    { year: '2021', title: 'Started Coding', desc: 'First "Hello World" changed everything', icon: '❀' },
-    { year: '2022', title: 'Discovered Data', desc: 'Fell in love with the stories hidden in data', icon: '❀' },
-    { year: '2023', title: 'Machine Learning', desc: 'Turning data into intelligence', icon: '❀' },
-    { year: '2024', title: 'AI & LLMs', desc: 'Exploring the future of intelligent systems', icon: '❀' },
-    { year: '2025', title: 'And Beyond', desc: 'Building solutions that create real impact', icon: '❀' }
-  ];
-
-  return (
-    <div className={`glass-card card-journey ${isActive ? 'glow-active' : ''}`} id="journey">
-      <div className="card-title"><span className="icon">❀</span> Journey Timeline</div>
-      <div className="timeline-container">
-        {journey.map((item, i) => (
-          <div className="timeline-item interactive" key={i}>
-            <div className="timeline-dot"></div>
-            <div className="timeline-year">{item.year}</div>
-            <div className="timeline-title">{item.title}</div>
-            <div className="timeline-desc">{item.desc}</div>
-          </div>
-        ))}
-      </div>
+const JourneyTimeline = () => (
+  <div className="glass-card card-timeline" id="journey">
+    <div className="card-title"><span className="icon">❀</span> Journey Timeline</div>
+    <div className="timeline-container">
+      {[
+        { year: '2003', title: 'The Beginning', desc: 'Curious mind with a love for puzzles' },
+        { year: '2021', title: 'Started Coding', desc: 'First "Hello World" changed everything' },
+        { year: '2022', title: 'Discovered Data', desc: 'Fell in love with the stories hidden in data' },
+        { year: '2023', title: 'Machine Learning', desc: 'Turning data into intelligence' },
+        { year: '2024', title: 'AI & LLMs', desc: 'Exploring the future of intelligent systems' },
+        { year: '2025', title: 'And Beyond', desc: 'Building solutions that create real impact' }
+      ].map((item, i) => (
+        <div className="timeline-item interactive" key={i}>
+          <div className="timeline-dot"></div>
+          <div className="timeline-year">{item.year}</div>
+          <div className="timeline-title">{item.title}</div>
+          <div className="timeline-desc">{item.desc}</div>
+        </div>
+      ))}
     </div>
-  );
-};
+  </div>
+);
 
-const ProjectGarden = ({ isActive }: { isActive?: boolean }) => {
+const ProjectGarden = () => {
   const projects = [
-    { title: 'Bank Churn Prediction', problem: 'Banks lose millions when customers churn. Can we predict who is likely to leave?', architecture: 'XGBoost, Random Forest Ensembles, SMOTE for class imbalance', businessImpact: 'Identified key churn drivers, allowing targeted retention campaigns that could save $2.4M annually.', metrics: [{label: 'Accuracy', value: '86%'}], links: {github: 'https://github.com/Shivansh07-stack/Bank_Data_Churn'} },
-    { title: 'Credit Card Fraud Detection', problem: 'Fraudulent transactions cause heavy losses.', architecture: 'Isolation Forest, Autoencoders', businessImpact: 'Reduced false positives by 30%.', metrics: [{label: 'F1 Score', value: '0.92'}], links: {github: 'https://github.com/Shivansh07-stack/Credit_Card_Fraud_Detection'} },
-    { title: 'AI Job Analyzer', problem: 'Scanning resumes takes too much time.', architecture: 'NLP, BERT embeddings', businessImpact: 'Automated 80% of initial screening.', metrics: [{label: 'Speedup', value: '5x'}], links: {github: 'https://github.com/Shivansh07-stack/AI_Job_Analyzer'} },
-    { title: 'RAG Chatbot', problem: 'Information retrieval across docs is slow.', architecture: 'LangChain, Pinecone, GPT-4', businessImpact: 'Instant knowledge access.', metrics: [{label: 'Latency', value: '800ms'}], links: {github: 'https://github.com/Shivansh07-stack/Multi-Document_RAG_Chatbot'} },
-    { title: 'AI Business Analyst', problem: 'Generating business insights is manual.', architecture: 'Pandas, GPT-4 Data Analysis', businessImpact: 'Automated daily reporting.', metrics: [{label: 'Reports', value: '100+'}], links: {github: 'https://github.com/Shivansh07-stack/AI_Business_Analyst'} },
-    { title: 'Twitter Sentiment', problem: 'Brand perception is hard to track.', architecture: 'HuggingFace Sentiment Pipeline', businessImpact: 'Real-time PR monitoring.', metrics: [{label: 'Accuracy', value: '89%'}], links: {github: 'https://github.com/Shivansh07-stack/Twitter-Recent-Tweets-Sentiment-Analysis'} },
-    { title: 'Wildlife Spread Prediction', problem: 'Tracking wildlife spread is difficult across large terrains.', architecture: 'Geospatial Data, Machine Learning', businessImpact: 'Aids conservation and resource planning.', metrics: [{label: 'Regions', value: '50+'}], links: {github: 'https://github.com/Shivansh07-stack/Wildlife_Spread_Prediction'} },
-    { title: 'Object Detection', problem: 'Distance estimation for robotics navigation.', architecture: 'YOLOv8, Depth Estimation', businessImpact: 'Enabled autonomous navigation.', metrics: [{label: 'mAP', value: '0.74'}], links: {github: 'https://github.com/Shivansh07-stack/Object-Detection-Distance-Estimation-for-Robotics-Navigation'} },
-    { title: 'PoisonScope', problem: 'Detecting data poisoning attacks in ML training sets.', architecture: 'Python, Security Analysis', businessImpact: 'Ensures model integrity and security.', metrics: [{label: 'Defense', value: 'Active'}], links: {github: 'https://github.com/Shivansh07-stack/PoisonScope'} }
+    { title: 'Bank Churn\nPrediction', problem: 'Banks lose millions when customers churn. Can we predict who is likely to leave?', architecture: 'XGBoost, Random Forest Ensembles, SMOTE for class imbalance', businessImpact: 'Identified key churn drivers, allowing targeted retention campaigns that could save $2.4M annually.', metrics: [{ label: 'Accuracy', value: '86%' }], links: { github: 'https://github.com/Shivansh07-stack/Bank_Data_Churn' }, isBud: false },
+    { title: 'Credit Card\nFraud Detection', problem: 'Fraudulent transactions cause heavy losses.', architecture: 'Isolation Forest, Autoencoders', businessImpact: 'Reduced false positives by 30%.', metrics: [{ label: 'F1 Score', value: '0.92' }], links: { github: 'https://github.com/Shivansh07-stack/Credit_Card_Fraud_Detection' }, isBud: false },
+    { title: 'AI Job\nAnalyzer', problem: 'Scanning resumes takes too much time.', architecture: 'NLP, BERT embeddings', businessImpact: 'Automated 80% of initial screening.', metrics: [{ label: 'Speedup', value: '5x' }], links: { github: 'https://github.com/Shivansh07-stack/AI_Job_Analyzer' }, isBud: false },
+    { title: 'RAG Chatbot\n(Multi-Document)', problem: 'Information retrieval across docs is slow.', architecture: 'LangChain, Pinecone, GPT-4', businessImpact: 'Instant knowledge access.', metrics: [{ label: 'Latency', value: '800ms' }], links: { github: 'https://github.com/Shivansh07-stack/Multi-Document_RAG_Chatbot' }, isBud: false },
+    { title: 'AI Business\nAnalyst', problem: 'Generating business insights is manual.', architecture: 'Pandas, GPT-4 Data Analysis', businessImpact: 'Automated daily reporting.', metrics: [{ label: 'Reports', value: '100+' }], links: { github: 'https://github.com/Shivansh07-stack/AI_Business_Analyst' }, isBud: false },
+    { title: 'Twitter Sentiment\nAnalysis', problem: 'Brand perception is hard to track.', architecture: 'HuggingFace Sentiment Pipeline', businessImpact: 'Real-time PR monitoring.', metrics: [{ label: 'Accuracy', value: '89%' }], links: { github: 'https://github.com/Shivansh07-stack/Twitter-Recent-Tweets-Sentiment-Analysis' }, isBud: false },
+    { title: 'University\nCurriculum Analyzer', problem: 'Analyzing curriculum text across universities.', architecture: 'NLP, TF-IDF, K-Means', businessImpact: 'Improved course structuring.', metrics: [{ label: 'Speed', value: '10x' }], links: { github: 'https://github.com/Shivansh07-stack' }, isBud: false },
+    { title: 'Object\nDetection', problem: 'Distance estimation for robotics navigation.', architecture: 'YOLOv8, Depth Estimation', businessImpact: 'Enabled autonomous navigation.', metrics: [{ label: 'mAP', value: '0.74' }], links: { github: 'https://github.com/Shivansh07-stack/Object-Detection-Distance-Estimation-for-Robotics-Navigation' }, isBud: false },
+    { title: 'More to\nBloom...', problem: '', architecture: '', businessImpact: '', metrics: [], links: {}, isBud: true }
   ];
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className={`glass-card card-garden ${isActive ? 'glow-active' : ''}`} id="projects">
+    <div className="glass-card card-garden" id="projects">
       <div className="card-title"><span className="icon">❀</span> Project Garden</div>
-      <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Each flower represents a project.<br/>Click to explore.</p>
+      <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Each flower represents a project.<br />Click to explore.</p>
       <div className="garden-grid">
         {projects.map((proj, i) => (
           <div className={`flower-item`} key={i} onClick={() => setSelected(selected === i ? null : i)}>
-            <div className="flower-name" style={{ color: selected === i ? 'var(--accent-red)' : '' }}>{proj.title}</div>
-            <SpiderLily id={`project-${i}`} isOpen={selected === i} onClose={() => setSelected(null)} projectData={proj} />
+            <SpiderLily id={`project-${i}`} isOpen={!proj.isBud} onClose={() => setSelected(null)} projectData={selected === i ? proj : undefined} />
+            <div className="flower-name" style={{ color: selected === i ? 'var(--accent-red)' : '' }}>
+              {proj.title.split('\n').map((line, j) => <div key={j}>{line}</div>)}
+            </div>
           </div>
         ))}
       </div>
@@ -193,17 +196,37 @@ const ChurnPrediction = () => {
         return <div className="tab-content"><p>Identified top churn drivers: Age & Account Balance.</p><p>Potential retention savings: $2.4M/year.</p></div>;
       default:
         return (
-          <>
-            <h3 style={{ fontSize: '0.8rem', marginBottom: '1rem', fontWeight: 500 }}>Architecture</h3>
-            <div className="architecture-diagram">
-              <div className="arch-box interactive">Raw Data</div>
-              <div className="arch-box interactive">Preprocessing</div>
-              <div className="arch-box interactive">Feature Engineering</div>
-              <div className="arch-box interactive">Model Training</div>
-              <div className="arch-box interactive">Model Evaluation</div>
-              <div className="arch-box interactive">Prediction API</div>
+          <div style={{ marginTop: '1.5rem' }}>
+            <h3 style={{ fontSize: '0.8rem', marginBottom: '1.2rem', fontWeight: 500 }}>Architecture</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr)', alignItems: 'center', justifyItems: 'center', rowGap: '0.8rem', columnGap: '0.2rem', width: '100%' }}>
+              {/* Row 1 */}
+              <div className="arch-box interactive" style={{ width: '100%', boxSizing: 'border-box', padding: '0.4rem 0.2rem', fontSize: '0.6rem', wordWrap: 'break-word' }}>Raw<br />Data</div>
+              <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>→</div>
+              <div className="arch-box interactive" style={{ width: '100%', boxSizing: 'border-box', padding: '0.4rem 0.2rem', fontSize: '0.6rem', wordWrap: 'break-word' }}>Preprocessing</div>
+              <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>→</div>
+              <div className="arch-box interactive" style={{ width: '100%', boxSizing: 'border-box', padding: '0.4rem 0.2rem', fontSize: '0.6rem', wordWrap: 'break-word' }}>Feature<br />Engineering</div>
+              <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>→</div>
+              <div className="arch-box interactive" style={{ width: '100%', boxSizing: 'border-box', padding: '0.4rem 0.2rem', fontSize: '0.6rem', wordWrap: 'break-word' }}>Model<br />Training</div>
+
+              {/* Row 2: Down arrows */}
+              <div />
+              <div />
+              <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>↓</div>
+              <div />
+              <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>↓</div>
+              <div />
+              <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>↓</div>
+
+              {/* Row 3 */}
+              <div />
+              <div />
+              <div className="arch-box interactive" style={{ width: '100%', boxSizing: 'border-box', padding: '0.4rem 0.2rem', fontSize: '0.6rem', wordWrap: 'break-word' }}>Model<br />Evaluation</div>
+              <div />
+              <div className="arch-box interactive" style={{ width: '100%', boxSizing: 'border-box', padding: '0.4rem 0.2rem', fontSize: '0.6rem', wordWrap: 'break-word' }}>Prediction<br />API</div>
+              <div />
+              <div className="arch-box interactive" style={{ width: '100%', boxSizing: 'border-box', padding: '0.4rem 0.2rem', fontSize: '0.6rem', wordWrap: 'break-word' }}>Dashboard<br />(Streamlit)</div>
             </div>
-          </>
+          </div>
         );
     }
   };
@@ -212,21 +235,29 @@ const ChurnPrediction = () => {
     <div className="glass-card card-churn" id="featured">
       <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', fontWeight: 500, marginBottom: '0.5rem' }}>Bank Customer<br/>Churn Prediction</h2>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.4rem', fontWeight: 500, marginBottom: '0.5rem' }}>Bank Customer<br />Churn Prediction</h2>
           <div className="subtitle" style={{ color: 'var(--accent-red)', fontSize: '0.8rem', letterSpacing: '2px', marginBottom: '1rem', textTransform: 'uppercase' }}>★ Featured Project</div>
         </div>
       </div>
-      
+
       <div className="churn-problem">
-        <strong style={{ color: '#fff', fontSize: '0.8rem' }}>Problem</strong><br/>
+        <strong style={{ color: '#fff', fontSize: '0.8rem' }}>Problem</strong><br />
         Banks lose millions when customers churn. Can we predict who is likely to leave?
       </div>
 
-      <div className="tabs">
-        {['Overview', 'Data', 'EDA', 'Modeling', 'Results'].map(t => (
-          <div key={t} className={`tab ${activeTab === t ? 'active' : ''}`} onClick={() => setActiveTab(t)}>
-            <div style={{ textAlign: 'center', marginBottom: '4px', fontSize: '1rem' }}>{activeTab === t ? '❀' : '○'}</div>
-            {t}
+      <div className="tabs" style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap', justifyContent: 'space-between' }}>
+        {[
+          { id: 'Overview', icon: <Flower2 size={18} /> },
+          { id: 'Data', icon: <Database size={18} /> },
+          { id: 'EDA', icon: <LineChart size={18} /> },
+          { id: 'Modeling', icon: <Network size={18} /> },
+          { id: 'Results', icon: <Sliders size={18} /> },
+          { id: 'Impact', icon: <Shield size={18} /> },
+          { id: 'Learnings', icon: <Lightbulb size={18} /> }
+        ].map(t => (
+          <div key={t.id} className={`tab ${activeTab === t.id ? 'active' : ''}`} onClick={() => setActiveTab(t.id)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0.8rem', cursor: 'pointer', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', flex: 1, minWidth: '60px' }}>
+            <div style={{ marginBottom: '8px', color: activeTab === t.id ? 'var(--accent-red)' : 'var(--text-secondary)' }}>{t.icon}</div>
+            <div style={{ fontSize: '0.7rem', color: activeTab === t.id ? '#fff' : 'var(--text-secondary)', textAlign: 'center' }}>{t.id}</div>
           </div>
         ))}
       </div>
@@ -235,20 +266,25 @@ const ChurnPrediction = () => {
         {renderContent()}
       </div>
 
-      <div className="tech-stack-row">
+      <div className="tech-stack-row" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginTop: '1.5rem' }}>
         <div>
           <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Tech Stack</div>
-          <div className="stack-icons">
-            <div className="stack-icon py">Py</div>
-            <div className="stack-icon pd">Pd</div>
-            <div className="stack-icon xg">XG</div>
+          <div className="stack-icons" style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" style={{ height: '20px', width: 'auto' }} title="Python" />
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" alt="Pandas" style={{ height: '20px', width: 'auto' }} title="Pandas" />
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg" alt="Scikit-Learn" style={{ height: '20px', width: 'auto' }} title="Scikit-Learn" />
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg" alt="Jupyter" style={{ height: '20px', width: 'auto' }} title="Jupyter" />
+            <img src="https://streamlit.io/images/brand/streamlit-mark-color.svg" alt="Streamlit" style={{ height: '20px', width: 'auto' }} title="Streamlit" />
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/XGBoost_logo.png" alt="XGBoost" style={{ height: '16px', width: 'auto', objectFit: 'contain' }} title="XGBoost" />
           </div>
         </div>
-        <div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '0.5rem', textAlign: 'right' }}>View on GitHub</div>
-          <div className="action-buttons">
-            <button className="btn-icon" onClick={() => window.open('https://github.com', '_blank')}>GH</button>
-            <button className="btn-primary" onClick={() => alert('Launching Demo...')}>Live Demo</button>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '1rem' }}>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>View on GitHub</div>
+          <div className="action-buttons" style={{ display: 'flex', gap: '1rem' }}>
+            <button className="btn-icon" onClick={() => window.open('https://github.com', '_blank')} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <svg viewBox="0 0 19 19" width="18" height="18"><path fill="#fff" fillRule="evenodd" d="M9.356 1.85C5.05 1.85 1.57 5.356 1.57 9.694a7.84 7.84 0 0 0 5.324 7.44c.387.079.528-.168.528-.376 0-.182-.013-.805-.013-1.454-2.165.467-2.616-.935-2.616-.935-.349-.91-.864-1.143-.864-1.143-.71-.48.051-.48.051-.48.787.051 1.2.805 1.2.805.695 1.194 1.817.857 2.268.649.064-.507.27-.857.49-1.052-1.728-.182-3.545-.857-3.545-3.87 0-.857.31-1.558.8-2.104-.078-.195-.349-1 .077-2.078 0 0 .657-.208 2.14.805a7.5 7.5 0 0 1 1.946-.26c.657 0 1.328.092 1.946.26 1.483-1.013 2.14-.805 2.14-.805.426 1.078.155 1.883.078 2.078.502.546.799 1.247.799 2.104 0 3.013-1.818 3.675-3.558 3.87.284.247.528.714.528 1.454 0 1.052-.012 1.896-.012 2.156 0 .208.142.455.528.377a7.84 7.84 0 0 0 5.324-7.441c.013-4.338-3.48-7.844-7.773-7.844" clipRule="evenodd" /></svg>
+            </button>
+            <button className="btn-primary interactive" onClick={() => window.open('https://example.com/demo', '_blank')}>Live Demo</button>
           </div>
         </div>
       </div>
@@ -256,31 +292,33 @@ const ChurnPrediction = () => {
   );
 };
 
-const SkillsConstellation = ({ isActive }: { isActive?: boolean }) => {
+const SkillsConstellation = () => {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
   const skills = [
-    { name: 'SQL', top: '20%', left: '20%', red: false },
-    { name: 'Python', top: '10%', left: '50%', red: false },
-    { name: 'PySpark', top: '30%', left: '80%', red: false },
-    { name: 'Pandas', top: '60%', left: '10%', red: true },
-    { name: 'Scikit-learn', top: '50%', left: '40%', red: true },
-    { name: 'TensorFlow', top: '60%', left: '60%', red: true },
-    { name: 'NLP', top: '50%', left: '90%', red: true },
-    { name: 'FastAPI', top: '90%', left: '25%', red: false },
-    { name: 'Django', top: '80%', left: '50%', red: false },
-    { name: 'Docker', top: '90%', left: '75%', red: false },
+    { name: 'Python', top: '15%', left: '50%', red: false },
+    { name: 'SQL', top: '40%', left: '20%', red: true },
+    { name: 'Machine Learning', top: '40%', left: '50%', red: true },
+    { name: 'PySpark', top: '40%', left: '80%', red: true },
+    { name: 'Pandas', top: '65%', left: '15%', red: false },
+    { name: 'Scikit-learn', top: '65%', left: '35%', red: false },
+    { name: 'TensorFlow', top: '65%', left: '65%', red: true },
+    { name: 'NLP', top: '65%', left: '85%', red: false },
+    { name: 'FastAPI', top: '85%', left: '20%', red: true },
+    { name: 'Django', top: '85%', left: '40%', red: false },
+    { name: 'Git & GitHub', top: '85%', left: '60%', red: true },
+    { name: 'Docker', top: '85%', left: '80%', red: true },
   ];
 
   return (
-    <div className={`glass-card card-skills ${isActive ? 'glow-active' : ''}`} id="skills">
+    <div className="glass-card card-skills" id="skills">
       <div className="card-title"><span className="icon">❀</span> Skills Constellation</div>
       <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Explore my universe of skills</p>
       <div className="constellation">
         {skills.map((skill) => (
-          <div 
+          <div
             key={skill.name}
-            className={`skill-node ${hoveredNode === skill.name ? 'pulse' : ''}`} 
+            className={`skill-node ${hoveredNode === skill.name ? 'pulse' : ''}`}
             style={{ top: skill.top, left: skill.left, zIndex: hoveredNode === skill.name ? 10 : 1 }}
             onMouseEnter={() => setHoveredNode(skill.name)}
             onMouseLeave={() => setHoveredNode(null)}
@@ -289,28 +327,57 @@ const SkillsConstellation = ({ isActive }: { isActive?: boolean }) => {
             <span className="skill-name" style={{ color: hoveredNode === skill.name ? '#fff' : '' }}>{skill.name}</span>
           </div>
         ))}
-        
-        <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0, opacity: 0.3, stroke: 'var(--accent-red-glow)', strokeWidth: 1, pointerEvents: 'none' }}>
-          <line x1="20%" y1="20%" x2="50%" y2="10%" />
-          <line x1="50%" y1="10%" x2="80%" y2="30%" />
-          <line x1="20%" y1="20%" x2="10%" y2="60%" />
-          <line x1="10%" y1="60%" x2="40%" y2="50%" />
-          <line x1="40%" y1="50%" x2="60%" y2="60%" />
-          <line x1="60%" y1="60%" x2="90%" y2="50%" />
-          <line x1="10%" y1="60%" x2="25%" y2="90%" />
-          <line x1="40%" y1="50%" x2="50%" y2="80%" />
-          <line x1="60%" y1="60%" x2="75%" y2="90%" />
+
+        <svg width="100%" height="100%" style={{ position: 'absolute', top: 0, left: 0, zIndex: 0, opacity: 0.25, stroke: '#fff', strokeWidth: 0.5, pointerEvents: 'none' }}>
+          {/* Row 2 Horizontal */}
+          <line x1="20%" y1="40%" x2="50%" y2="40%" />
+          <line x1="50%" y1="40%" x2="80%" y2="40%" />
+
+          {/* Row 3 Horizontal */}
+          <line x1="15%" y1="65%" x2="35%" y2="65%" />
+          <line x1="35%" y1="65%" x2="65%" y2="65%" />
+          <line x1="65%" y1="65%" x2="85%" y2="65%" />
+
+          {/* Row 4 Horizontal */}
+          <line x1="20%" y1="85%" x2="40%" y2="85%" />
+          <line x1="40%" y1="85%" x2="60%" y2="85%" />
+          <line x1="60%" y1="85%" x2="80%" y2="85%" />
+
+          {/* Diagonals from Python */}
+          <line x1="50%" y1="15%" x2="20%" y2="40%" />
+          <line x1="50%" y1="15%" x2="80%" y2="40%" />
+
+          {/* Diagonals from SQL */}
+          <line x1="20%" y1="40%" x2="15%" y2="65%" />
+          <line x1="20%" y1="40%" x2="35%" y2="65%" />
+
+          {/* Diagonals from ML */}
+          <line x1="50%" y1="40%" x2="35%" y2="65%" />
+          <line x1="50%" y1="40%" x2="65%" y2="65%" />
+
+          {/* Diagonals from PySpark */}
+          <line x1="80%" y1="40%" x2="65%" y2="65%" />
+          <line x1="80%" y1="40%" x2="85%" y2="65%" />
+
+          {/* Diagonals from Row 3 to Row 4 */}
+          <line x1="15%" y1="65%" x2="20%" y2="85%" />
+          <line x1="35%" y1="65%" x2="20%" y2="85%" />
+          <line x1="35%" y1="65%" x2="40%" y2="85%" />
+          <line x1="65%" y1="65%" x2="40%" y2="85%" />
+          <line x1="65%" y1="65%" x2="60%" y2="85%" />
+          <line x1="65%" y1="65%" x2="80%" y2="85%" />
+          <line x1="85%" y1="65%" x2="80%" y2="85%" />
         </svg>
       </div>
     </div>
   );
 };
 
-const LiveFeed = ({ isActive }: { isActive?: boolean }) => {
+const LiveFeed = () => {
   const [hoveredCell, setHoveredCell] = useState<number | null>(null);
 
   return (
-    <div className={`glass-card card-live ${isActive ? 'glow-active' : ''}`} id="live">
+    <div className="glass-card card-live" id="live">
       <div className="card-title">Live Feed</div>
       <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Real-time activity from my digital garden</p>
       <div className="feed-list">
@@ -329,19 +396,19 @@ const LiveFeed = ({ isActive }: { isActive?: boolean }) => {
           </div>
         ))}
       </div>
-      
+
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '1.5rem' }}>
         <div>
           <div style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>GitHub Activity</div>
           <div className="github-heatmap">
             {Array.from({ length: 24 }).map((_, i) => (
-              <div 
-                key={i} 
+              <div
+                key={i}
                 className={`heatmap-cell level-${Math.floor(Math.random() * 4)} ${hoveredCell === i ? 'hovered' : ''}`}
                 onMouseEnter={() => setHoveredCell(i)}
                 onMouseLeave={() => setHoveredCell(null)}
               >
-                {hoveredCell === i && <div className="tooltip">Commits: {Math.floor(Math.random()*5)}</div>}
+                {hoveredCell === i && <div className="tooltip">Commits: {Math.floor(Math.random() * 5)}</div>}
               </div>
             ))}
           </div>
@@ -369,15 +436,15 @@ function App() {
       <Sidebar activeSection={activeSection} scrollToSection={scrollToSection} />
       <main className="main-content">
         <HeroSection />
-        
+
         <div className="portfolio-grid">
-          <JourneyTimeline isActive={activeSection === 'journey'} />
-          <ProjectGarden isActive={activeSection === 'projects'} />
+          <JourneyTimeline />
+          <ProjectGarden />
           <ChurnPrediction />
-          <SkillsConstellation isActive={activeSection === 'skills'} />
-          <LiveFeed isActive={activeSection === 'live'} />
-          
-          <div className={`glass-card card-about ${activeSection === 'about' ? 'glow-active' : ''}`} id="about" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+          <SkillsConstellation />
+          <LiveFeed />
+
+          <div className="glass-card card-about" id="about" style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
             <div style={{ flex: 1 }}>
               <div className="card-title">About Me</div>
               <p className="about-text">
@@ -386,7 +453,7 @@ function App() {
               <button className="hero-btn" style={{ fontSize: '0.8rem' }} onClick={() => window.open('/Shivansh_Sharma_Resume.pdf', '_blank')}>Know More About Me <div className="hero-btn-arrow" style={{ width: '20px', height: '20px' }}>→</div></button>
             </div>
           </div>
-          
+
           <div className="glass-card card-stats interactive-card">
             <div className="stat-box">
               <span className="stat-num counter">10+</span>
@@ -400,15 +467,34 @@ function App() {
               <span className="stat-num counter">2</span>
               <span className="stat-label">Internships</span>
             </div>
+            <div className="stat-box">
+              <span className="stat-num counter">15+</span>
+              <span className="stat-label">Technologies</span>
+            </div>
+            <div className="stat-box">
+              <span className="stat-num counter" style={{ fontSize: '1.5rem', marginTop: '-0.2rem' }}>∞</span>
+              <span className="stat-label">Curiosity</span>
+            </div>
           </div>
-          
+
           <div className="glass-card card-connect">
-            <div className="card-title">Let's Connect</div>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>I'm always excited to collaborate and build amazing things together.</p>
-            <div className="action-buttons">
-              <button className="btn-icon interactive" onClick={() => window.open('https://github.com', '_blank')}>GH</button>
-              <button className="btn-icon interactive" onClick={() => window.open('https://linkedin.com', '_blank')}>IN</button>
-              <button className="btn-icon interactive" onClick={() => window.location.href = 'mailto:hello@example.com'}>EM</button>
+            <div className="card-title" style={{ textTransform: 'uppercase', marginBottom: '1rem' }}>Let's Connect</div>
+            <p style={{ fontSize: '0.75rem', color: '#e2e8f0', marginBottom: '1.5rem', maxWidth: '300px', lineHeight: '1.5' }}>
+              I'm always excited to collaborate<br />and build amazing things together.
+            </p>
+            <div className="action-buttons" style={{ display: 'flex', gap: '0.8rem' }}>
+              <button className="btn-icon interactive" onClick={() => window.open('https://github.com', '_blank')} style={{ borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+              </button>
+              <button className="btn-icon interactive" onClick={() => window.open('https://linkedin.com', '_blank')} style={{ borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              </button>
+              <button className="btn-icon interactive" onClick={() => window.location.href = 'mailto:hello@example.com'} style={{ borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              </button>
+              <button className="btn-icon interactive" onClick={() => window.open('https://twitter.com', '_blank')} style={{ borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent', border: '1px solid rgba(255,255,255,0.2)' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e2e8f0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+              </button>
             </div>
           </div>
         </div>

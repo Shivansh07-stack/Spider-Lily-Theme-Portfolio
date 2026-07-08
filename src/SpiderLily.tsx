@@ -12,7 +12,7 @@ export type ProjectData = {
 };
 
 type SpiderLilyProps = {
-  id: string | number; 
+  id: string | number;
   isOpen?: boolean;
   onClose?: () => void;
   className?: string;
@@ -24,7 +24,7 @@ export default function SpiderLily({ id, isOpen = false, onClose, className = ""
   const stemRef = useRef<SVGGElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  
+
   const [modalStyle, setModalStyle] = useState<React.CSSProperties>({});
   const [isRendered, setIsRendered] = useState(isOpen);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
@@ -43,7 +43,7 @@ export default function SpiderLily({ id, isOpen = false, onClose, className = ""
     if (stemRef.current && !isOpen) {
       const duration = 4 + Math.random() * 2;
       const delay = Math.random() * -duration;
-      
+
       const swayTween = gsap.to(stemRef.current, {
         rotation: 2,
         duration: duration,
@@ -67,14 +67,14 @@ export default function SpiderLily({ id, isOpen = false, onClose, className = ""
       // Bloom Open
       gsap.killTweensOf(containerRef.current.querySelectorAll("path, circle"));
       gsap.killTweensOf(glowRef.current);
-      
+
       gsap.to(containerRef.current.querySelector(".hero-sheath"), {
         scale: 0.8, opacity: 0, duration: 0.15, transformOrigin: "bottom center"
       });
 
       for (let i = 0; i < blossomsConfig.length; i++) {
         const blossomDelay = i * 0.04;
-        
+
         gsap.to(containerRef.current.querySelectorAll(`.hero-petal-base-${i}`), {
           scale: 1.0, rotation: 0, ease: "power3.out", duration: 0.35, delay: blossomDelay
         });
@@ -99,7 +99,7 @@ export default function SpiderLily({ id, isOpen = false, onClose, className = ""
       // Close or Idle
       gsap.killTweensOf(containerRef.current.querySelectorAll("path, circle"));
       gsap.killTweensOf(glowRef.current);
-      
+
       for (let i = blossomsConfig.length - 1; i >= 0; i--) {
         const reverseDelay = (blossomsConfig.length - 1 - i) * 0.03;
 
@@ -132,33 +132,33 @@ export default function SpiderLily({ id, isOpen = false, onClose, className = ""
   // Dynamic Modal Positioning
   useEffect(() => {
     if (!isOpen) return;
-    
+
     const updatePosition = () => {
       if (wrapperRef.current) {
         const rect = wrapperRef.current.getBoundingClientRect();
         const spaceAbove = rect.top;
         const spaceBelow = window.innerHeight - rect.bottom;
-        
+
         // If there's less than 350px above, and more space below, open downwards
         const openBelow = spaceAbove < 350 && spaceBelow > spaceAbove;
-        
+
         setModalStyle({
           position: 'fixed',
           left: `${rect.left + rect.width / 2}px`,
           transform: 'translateX(-50%)',
           zIndex: 99999,
-          ...(openBelow 
+          ...(openBelow
             ? { top: `${rect.bottom + 10}px`, bottom: 'auto' }
             : { bottom: `${window.innerHeight - rect.top + 40}px`, top: 'auto' }
           )
         });
       }
     };
-    
+
     updatePosition();
     window.addEventListener('scroll', updatePosition, true);
     window.addEventListener('resize', updatePosition);
-    
+
     return () => {
       window.removeEventListener('scroll', updatePosition, true);
       window.removeEventListener('resize', updatePosition);
@@ -181,45 +181,45 @@ export default function SpiderLily({ id, isOpen = false, onClose, className = ""
   }, [isOpen, isRendered]);
 
   return (
-    <div 
+    <div
       ref={wrapperRef}
       className={`spider-lily-wrapper ${className}`}
-      style={{ 
-        position: 'relative', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
+      style={{
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
         cursor: 'pointer',
         zIndex: 20
       }}
     >
-      <div 
+      <div
         ref={containerRef}
-        style={{ 
+        style={{
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           transformOrigin: 'bottom',
           transition: 'all 0.3s',
-          width: '80px', 
-          height: '50px', 
-          margin: '0 auto' 
+          width: '100px',
+          height: '100px',
+          margin: '0 auto'
         }}
       >
-        <div 
+        <div
           ref={glowRef}
-          style={{ 
+          style={{
             position: 'absolute',
             top: '50%',
             left: '50%',
-            width: '100px', height: '100px', transform: 'translate(-50%, -50%) scale(0.5)', 
+            width: '120px', height: '120px', transform: 'translate(-50%, -50%) scale(0.5)',
             background: 'rgba(225, 29, 72, 0.3)', borderRadius: '50%', filter: 'blur(15px)',
             opacity: 0, pointerEvents: 'none'
           }}
         />
 
-        <div style={{ position: 'relative', pointerEvents: 'none', width: '80px', height: '80px', marginTop: '-30px' }}>
+        <div style={{ position: 'relative', pointerEvents: 'none', width: '100px', height: '100px' }}>
           <svg viewBox="-300 -300 600 600" style={{ width: '100%', height: '100%', overflow: 'visible', filter: 'drop-shadow(0 0 5px rgba(225,29,72,0.5))' }}>
             <defs>
               <radialGradient id={`petal-grad-${id}`} cx="50%" cy="100%" r="100%">
@@ -237,7 +237,7 @@ export default function SpiderLily({ id, isOpen = false, onClose, className = ""
               <path d="M-2,100 Q -30,60 -50,45 Q -35,85 -2,100 Z" fill="#123527" opacity="0.6" />
 
               <path className="hero-sheath" d="M0,0 C -15,-20 -20,-70 0,-90 C 20,-70 15,-20 0,0 Z" fill="#2A0810" />
-              
+
               {blossomsConfig.map((b) => (
                 <g key={`blossom-${b.id}`} transform={`rotate(${b.angle}) translate(0, -10)`}>
                   <g>
@@ -264,7 +264,7 @@ export default function SpiderLily({ id, isOpen = false, onClose, className = ""
                       const yDest = isLong ? -280 : -230;
                       const sweep = i < 3 ? -60 : 60;
                       const stamenPath = `M0,0 Q ${sweep},${yDest / 2} 0,${yDest}`;
-                      
+
                       return (
                         <g key={`stamen-${i}`} transform={`rotate(${deg})`}>
                           <path
@@ -295,53 +295,53 @@ export default function SpiderLily({ id, isOpen = false, onClose, className = ""
 
       {isRendered && projectData && typeof document !== 'undefined' && createPortal(
         <>
-          <div 
+          <div
             className={isAnimatingOut ? 'modal-backdrop-out' : 'modal-backdrop-in'}
-            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 99990 }} 
-            onClick={(e) => { e.stopPropagation(); onClose?.(); }} 
+            style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 99990 }}
+            onClick={(e) => { e.stopPropagation(); onClose?.(); }}
           />
-          <div 
+          <div
             className={`project-modal ${isAnimatingOut ? 'modal-out' : 'modal-in'}`}
             onClick={(e) => e.stopPropagation()}
             style={modalStyle}
           >
-          <div className="project-modal-header">
-            <h3>{projectData.title}</h3>
-            <button onClick={(e) => { e.stopPropagation(); onClose?.(); }}>&times;</button>
-          </div>
-          
-          <div className="project-modal-content">
-            <div className="modal-section">
-              <h4>Problem</h4>
-              <p>{projectData.problem}</p>
-            </div>
-            <div className="modal-section">
-              <h4>Architecture</h4>
-              <p>{projectData.architecture}</p>
-            </div>
-            <div className="modal-section">
-              <h4>Impact</h4>
-              <p className="impact-text">{projectData.businessImpact}</p>
-            </div>
-            
-            <div className="modal-metrics">
-              {projectData.metrics.map((m, i) => (
-                <div key={i} className="metric-box">
-                  <p className="metric-label">{m.label}</p>
-                  <p className="metric-value">{m.value}</p>
-                </div>
-              ))}
+            <div className="project-modal-header">
+              <h3>{projectData.title}</h3>
+              <button onClick={(e) => { e.stopPropagation(); onClose?.(); }}>&times;</button>
             </div>
 
-            <div className="modal-footer">
-              {projectData.links?.github && (
-                <a href={projectData.links.github} target="_blank" rel="noreferrer" className="modal-link">
-                  View Source &#8599;
-                </a>
-              )}
+            <div className="project-modal-content">
+              <div className="modal-section">
+                <h4>Problem</h4>
+                <p>{projectData.problem}</p>
+              </div>
+              <div className="modal-section">
+                <h4>Architecture</h4>
+                <p>{projectData.architecture}</p>
+              </div>
+              <div className="modal-section">
+                <h4>Impact</h4>
+                <p className="impact-text">{projectData.businessImpact}</p>
+              </div>
+
+              <div className="modal-metrics">
+                {projectData.metrics.map((m, i) => (
+                  <div key={i} className="metric-box">
+                    <p className="metric-label">{m.label}</p>
+                    <p className="metric-value">{m.value}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="modal-footer">
+                {projectData.links?.github && (
+                  <a href={projectData.links.github} target="_blank" rel="noreferrer" className="modal-link">
+                    View Source &#8599;
+                  </a>
+                )}
+              </div>
             </div>
           </div>
-        </div>
         </>,
         document.body
       )}
