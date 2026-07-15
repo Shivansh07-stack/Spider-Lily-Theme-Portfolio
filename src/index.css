@@ -319,7 +319,7 @@ body::before {
 .card-churn {
   grid-column: span 1;
   grid-row: span 3;
-  background: linear-gradient(to bottom right, rgba(225, 29, 72, 0.08) 0%, rgba(5, 8, 16, 0.9) 40%, var(--bg-card) 100%);
+  background: linear-gradient(to bottom right, rgba(225, 29, 72, 0.4) 0%, rgba(5, 8, 16, 0.95) 50%, var(--bg-card) 100%), url('/bank_churn_pred.png') no-repeat top right / cover;
 }
 
 .card-skills {
