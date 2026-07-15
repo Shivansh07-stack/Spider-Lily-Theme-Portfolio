@@ -21,6 +21,11 @@
   padding: 0;
 }
 
+html {
+  overflow-x: hidden;
+  overflow-y: scroll; /* Forces scrollbar to always exist, preventing background jitters */
+}
+
 body {
   background-color: var(--bg-main);
   color: var(--text-primary);
@@ -220,7 +225,7 @@ body::before {
   gap: 1rem;
   background: transparent;
   border: none;
-  color: var(--text-primary);
+  color: var(--accent-red);
   font-family: var(--font-sans);
   font-size: 1rem;
   cursor: pointer;
@@ -314,7 +319,7 @@ body::before {
 .card-churn {
   grid-column: span 1;
   grid-row: span 3;
-  background: linear-gradient(to bottom, rgba(5, 8, 16, 0.1) 0%, rgba(5, 8, 16, 0.8) 40%, var(--bg-card) 80%), url('/bank_churn_pred.png') no-repeat top right / cover;
+  background: linear-gradient(to bottom right, rgba(225, 29, 72, 0.08) 0%, rgba(5, 8, 16, 0.9) 40%, var(--bg-card) 100%);
 }
 
 .card-skills {
@@ -582,10 +587,30 @@ body::before {
   letter-spacing: 1px;
 }
 
+.tab {
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
 .tab.active {
   color: var(--accent-red);
   border-bottom: 2px solid var(--accent-red);
 }
+
+.tab-content {
+  margin-top: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.tab-content p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
 
 .architecture-diagram {
   display: grid;
@@ -774,6 +799,7 @@ body::before {
   white-space: nowrap;
 }
 
+/* ── Tablet (≤1400px) ─────────────────────────────────────── */
 @media (max-width: 1400px) {
   .portfolio-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -784,25 +810,152 @@ body::before {
   .card-connect {
     grid-column: span 1;
   }
+
+  .hero-widgets {
+    width: 240px;
+    right: 2rem;
+  }
 }
 
+/* ── Small Tablet (≤900px) ────────────────────────────────── */
 @media (max-width: 900px) {
-  .portfolio-grid {
-    grid-template-columns: 1fr;
+  .sidebar {
+    display: none;
   }
 
   .main-content {
     margin-left: 0;
   }
 
-  .sidebar {
-    display: none;
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+    padding: 0 1.5rem 3rem;
   }
 
+  .card-timeline,
+  .card-garden,
+  .card-churn,
+  .card-skills,
+  .card-live,
   .card-about,
   .card-stats,
   .card-connect {
-    grid-column: span 1;
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
+  }
+
+  .card-stats {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  .hero-section {
+    padding: 0 2rem;
+    height: auto;
+    min-height: 420px;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+  }
+
+  .top-header {
+    padding: 1.5rem 2rem;
+  }
+
+  .hero-quote {
+    font-size: 2.4rem;
+  }
+
+  /* Move widgets from fixed overlay into normal flow */
+  .hero-widgets {
+    position: relative;
+    right: auto;
+    top: auto;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 0 2rem 2rem;
+  }
+
+  .hero-widgets > * {
+    flex: 1 1 260px;
+    min-width: 0;
+  }
+}
+
+/* ── Mobile (≤600px) ──────────────────────────────────────── */
+@media (max-width: 600px) {
+  .hero-section {
+    padding: 5rem 1.2rem 2rem;
+    min-height: unset;
+  }
+
+  .top-header {
+    padding: 1rem 1.2rem;
+  }
+
+  .top-header h1 {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+  }
+
+  .hero-quote {
+    font-size: 1.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-btn {
+    font-size: 0.875rem;
+  }
+
+  .hero-widgets {
+    flex-direction: column;
+    padding: 0 1.2rem 1.5rem;
+  }
+
+  .hero-widgets > * {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .portfolio-grid {
+    padding: 0 1.2rem 2rem;
+    gap: 1rem;
+  }
+
+  .glass-card {
+    padding: 1.2rem;
+  }
+
+  /* Let's Connect icons — smaller on very narrow screens */
+  .card-connect .btn-icon {
+    width: 46px !important;
+    height: 46px !important;
+  }
+
+  .card-connect .btn-icon svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .action-buttons {
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .hero-btn-arrow {
+    width: 24px;
+    height: 24px;
+  }
+
+  .constellation {
+    height: 200px;
+  }
+
+  .garden-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
   }
 }
 
