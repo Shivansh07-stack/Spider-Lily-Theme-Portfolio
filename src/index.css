@@ -334,6 +334,7 @@ body::before {
 
 .card-about {
   grid-column: span 1;
+  grid-row: span 2;
   background: linear-gradient(to right, rgba(5, 8, 16, 0.95) 0%, rgba(5, 8, 16, 0.6) 50%, rgba(5, 8, 16, 0) 100%), url('/about_me.png') no-repeat center center / cover;
   min-height: 180px;
 }
@@ -346,7 +347,7 @@ body::before {
 }
 
 .card-connect {
-  grid-column: span 1;
+  grid-column: span 2;
   background: linear-gradient(to right, rgba(5, 8, 16, 0.95) 0%, rgba(5, 8, 16, 0.7) 40%, rgba(5, 8, 16, 0) 100%), url('/lets_connect.png') no-repeat center right / cover;
   min-height: 200px;
   display: flex;
@@ -1240,4 +1241,8 @@ body::before {
 
 .modal-link:hover {
   color: var(--text-primary);
+}
+.card-experience {
+  grid-column: span 1;
+  grid-row: span 2;
 }
